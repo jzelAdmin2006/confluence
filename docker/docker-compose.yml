@@ -22,15 +22,15 @@ services:
     env_file:
       - ./.env
     environment:
-      - TZ='Asia/Shanghai'
+      - TZ='America/Los_Angeles'
       - JVM_MINIMUM_MEMORY=${JVM_MINIMUM_MEMORY}
       - JVM_MAXIMUM_MEMORY=${JVM_MAXIMUM_MEMORY}
       - JVM_RESERVED_CODE_CACHE_SIZE=${JVM_RESERVED_CODE_CACHE_SIZE}
       
-      # - ATL_PROXY_NAME=${ATL_PROXY_NAME}
-      # - ATL_PROXY_PORT=${ATL_PROXY_PORT}
-      # - ATL_TOMCAT_SCHEME=${ATL_TOMCAT_SCHEME}
-      # - ATL_TOMCAT_SECURE=${ATL_TOMCAT_SECURE}
+      - ATL_PROXY_NAME=${ATL_PROXY_NAME}
+      - ATL_PROXY_PORT=${ATL_PROXY_PORT}
+      - ATL_TOMCAT_SCHEME=${ATL_TOMCAT_SCHEME}
+      - ATL_TOMCAT_SECURE=${ATL_TOMCAT_SECURE}
         
       # - HTTP_PROXY=${HTTP_PROXY}
       # - HTTPS_PROXY=${HTTPS_PROXY}
@@ -39,30 +39,17 @@ services:
       - confluence
 
   db:
-    image: mysql:${MYSQL_VERSION}
-    container_name: confluence-mysql
-    hostname: "confluencemysql"
+    image: postgres:${POSTGRES_VERSION}
+    container_name: confluence-postgres
+    hostname: "confluencedb"
     environment:
-      - TZ='Asia/Shanghai'
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-    cap_add:
-      - SYS_NICE # CAP_SYS_NICE
-    command:
-      [
-        'mysqld',
-        '--character-set-server=utf8mb4',
-        '--collation-server=utf8mb4_bin',
-        '--transaction-isolation=READ-COMMITTED',
-        '--innodb_log_file_size=256M',
-        '--max_allowed_packet=256M',
-        '--log_bin_trust_function_creators=1',
-        '--skip-log-bin'
-      ]
+      - TZ='America/Los_Angeles'
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_INITDB_ARGS=--locale=en_US.UTF-8 --lc-collate=C.UTF-8 --lc-ctype=C.UTF-8
     volumes:
-      - ../data/mysql:/var/lib/mysql
+      - ../data/postgres:/var/lib/postgresql/data
     restart: always
     networks:
       - confluence

@@ -1,5 +1,5 @@
 ARG CONFLUENCE_VERSION=8.5.1
-FROM atlassian/confluence-server:${CONFLUENCE_VERSION}-jdk11
+FROM atlassian/confluence-server:${CONFLUENCE_VERSION}
 
 LABEL maintainer="xSharp <xsharp@hi3w.com>" version="${CONFLUENCE_VERSION}-lts"
 
