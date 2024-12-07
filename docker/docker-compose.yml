@@ -17,7 +17,7 @@ services:
       - "8090:8090"
       - "8091:8091"
     volumes:
-      - ../data/confluence:/var/atlassian/application-data/confluence
+      - confluencedata:/var/atlassian/application-data/confluence
     restart: always
     env_file:
       - ./.env
@@ -49,7 +49,7 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_INITDB_ARGS=--locale=en_US.UTF-8 --lc-collate=C.UTF-8 --lc-ctype=C.UTF-8
     volumes:
-      - ../data/postgres:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
     restart: always
     networks:
       - confluence
@@ -57,3 +57,7 @@ services:
 networks:
   confluence:
     driver: bridge
+
+volumes:
+  pgdata:
+  confluencedata:
